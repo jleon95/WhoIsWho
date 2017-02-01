@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 import com.npi.whoiswho.pandora.PandoraConnection;
 import com.npi.whoiswho.pandora.PandoraErrorCode;
 import com.npi.whoiswho.pandora.PandoraException;
-//import conversandroid.pandora.PandoraResultProcessor;
 //import com.npi.whoiswho.R;
 
 public class MainActivity extends VoiceActivity {
@@ -34,12 +33,12 @@ public class MainActivity extends VoiceActivity {
     private static Integer ID_PROMPT_INFO = 1;    //Id chosen to identify the prompts that involve only informing the user
     private long startListeningTime = 0; // To skip errors (see processAsrError method)
 
-    //TODO: USE YOUR OWN PARAMETERS TO MAKE IT WORK
     private String host = "aiaas.pandorabots.com";
-    private String userKey = "YOUR USER KEY HERE";
+    private String userKey = "587efd355aa6a6c0a6b7c8ce38583e34";
     private String appId = "YOUR APP ID HERE";
     private String botName = "YOUR BOT NAME HERE";
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
+    Locale spanish = new Locale("spa","ESP");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +88,7 @@ public class MainActivity extends VoiceActivity {
 					* Number of results = 1 (we will use the best result to perform the search)
 					*/
                 startListeningTime = System.currentTimeMillis();
-                listen(Locale.ENGLISH, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM, 1); //Start listening
+                listen(spanish, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM, 1); //Start listening
             } catch (Exception e) {
                 Log.e(LOGTAG, e.getMessage());
             }
@@ -162,7 +161,7 @@ public class MainActivity extends VoiceActivity {
                 });
 
                 Log.e(LOGTAG, "Error when attempting to listen: " + errorMsg);
-                try { speak(errorMsg,"EN", ID_PROMPT_INFO); } catch (Exception e) { Log.e(LOGTAG, "TTS not accessible"); }
+                try { speak(errorMsg,"spa","ESP", ID_PROMPT_INFO); } catch (Exception e) { Log.e(LOGTAG, "TTS not accessible"); }
             }
         }
 
@@ -240,7 +239,7 @@ public class MainActivity extends VoiceActivity {
 
         result = removeTags(result);
         try {
-            speak(result,"EN",ID_PROMPT_INFO);
+            speak(result,"spa","ESP",ID_PROMPT_INFO);
         } catch (Exception e) {
             Log.e(LOGTAG, "The message '"+result+"' could not be synthesized");
             showProgressBar(false);

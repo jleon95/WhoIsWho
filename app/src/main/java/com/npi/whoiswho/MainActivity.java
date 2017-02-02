@@ -204,7 +204,7 @@ public class MainActivity extends VoiceActivity {
                 break;
 
             case NOMATCH: //There is no response available for the query
-                errormsg =  getResources().getString(R.string.iderror_prompt);
+                errormsg = getResources().getString(R.string.nomatch_prompt);
                 break;
 
             case IDORHOST: //Problem with ID or the host name indicted for the Pandora service
@@ -216,7 +216,7 @@ public class MainActivity extends VoiceActivity {
                 break;
 
             case PARSE: //Error parsing the robot response
-                errormsg = getResources().getString(R.string.iderror_prompt);
+                errormsg = getResources().getString(R.string.parseerror_prompt);
                 break;
 
             default:

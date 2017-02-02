@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.npi.whoiswho.voiceinterface.VoiceActivity;
@@ -40,6 +41,8 @@ public class MainActivity extends VoiceActivity {
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
     Locale spanish = new Locale("spa","ESP");
 
+    private TextView pregunta;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,9 @@ public class MainActivity extends VoiceActivity {
         //Set up the speech button and progress circle
         setSpeakButton();
         showProgressBar(false);
+
+        //Conecta el textView
+        pregunta = (TextView) findViewById(R.id.pregunta);
     }
 
     private void setSpeakButton() {
@@ -183,6 +189,10 @@ public class MainActivity extends VoiceActivity {
             if(nBestList.size()>0){
                 String userQuery = nBestList.get(0); //We will use the best result
 
+                //Quita los acentos del string obtenido
+                userQuery = RemoveAccents(userQuery);
+                pregunta.setText("Pregunta: " + userQuery);
+
                 try {
                     String response = pandoraConnection.talk(userQuery); //Query to pandorabots
                     processBotResults(response); //Process the bot response
@@ -261,6 +271,23 @@ public class MainActivity extends VoiceActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
+    }
+
+    public String RemoveAccents(String original) {
+
+        // Cadena con los caracteres acentuados, ñ y dieresis.
+        String acentos = "áéíóúüÁÉÍÓÚÜ";
+        // Cadena de caracteres sin acentos, ñ o dieresis.
+        String sin_acentos = "aeiouuAEIOUU";
+
+        String resultado = original;
+
+        for (int i=0; i<acentos.length(); i++) {
+
+            resultado = resultado.replace(acentos.charAt(i), sin_acentos.charAt(i));
+        }
+
+        return resultado;
     }
 
     @Override

@@ -14,6 +14,12 @@
         android:text="@string/speechbtn_default"
         android:textSize="30sp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pregunta: "
+        android:id="@+id/pregunta" />
+
     <RelativeLayout
         android:id="@+id/listeningCircle"
         android:layout_width="match_parent"

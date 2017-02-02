@@ -34,9 +34,9 @@ public class MainActivity extends VoiceActivity {
     private long startListeningTime = 0; // To skip errors (see processAsrError method)
 
     private String host = "aiaas.pandorabots.com";
-    private String userKey = "587efd355aa6a6c0a6b7c8ce38583e34";
-    private String appId = "YOUR APP ID HERE";
-    private String botName = "YOUR BOT NAME HERE";
+    private String userKey = "e89ca9ea91e172774efd1129925b54fd";
+    private String appId = "1409614129853";
+    private String botName = "whoiswho";
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
     Locale spanish = new Locale("spa","ESP");
 

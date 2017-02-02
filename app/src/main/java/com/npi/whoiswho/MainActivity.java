@@ -39,6 +39,7 @@ public class MainActivity extends VoiceActivity {
     private String appId = "1409614129853";
     private String botName = "whoiswho";
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
+
     Locale spanish = new Locale("spa","ESP");
 
     private TextView pregunta;
@@ -249,8 +250,10 @@ public class MainActivity extends VoiceActivity {
 
         result = removeTags(result);
         try {
-            speak(result,"spa","ESP",ID_PROMPT_INFO);
+            speak(result,spanish,ID_PROMPT_INFO);
+
         } catch (Exception e) {
+            pregunta.setText("Error: " + e);
             Log.e(LOGTAG, "The message '"+result+"' could not be synthesized");
             showProgressBar(false);
         }

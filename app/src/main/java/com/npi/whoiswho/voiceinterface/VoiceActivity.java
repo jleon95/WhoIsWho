@@ -230,6 +230,11 @@ public abstract class VoiceActivity extends Activity implements RecognitionListe
     public abstract void onTTSError(String uttId);
     public abstract void onTTSStart(String uttId);
 
+    public void setLocale(Locale locale) {
+
+        myTTS.setLanguage(locale);
+    }
+
     public void setLocale(String languageCode, String countryCode) throws Exception{
         if(languageCode==null)
         {
@@ -274,25 +279,84 @@ public abstract class VoiceActivity extends Activity implements RecognitionListe
         myTTS.setLanguage(Locale.getDefault());
     }
 
+    public void speak(String text, Locale locale, Integer id) throws Exception{
+
+        setLocale(locale);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+
+            Bundle params = new Bundle();
+            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params, "msg_id");
+
+        } else {
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+        }
+    }
+
     public void speak(String text, String languageCode, String countryCode, Integer id) throws Exception{
+
         setLocale(languageCode, countryCode);
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-        myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+
+            Bundle params = new Bundle();
+            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params, "msg_id");
+
+        } else {
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+        }
     }
 
     public void speak(String text, String languageCode, Integer id) throws Exception{
+
         setLocale(languageCode);
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-        myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+
+            Bundle params = new Bundle();
+            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params, "msg_id");
+
+        } else {
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+        }
     }
 
     public void speak(String text, Integer id){
+
         setLocale();
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-        myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+
+            Bundle params = new Bundle();
+            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params, "msg_id");
+
+        } else {
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
+
+            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
+        }
     }
 
     public void stop(){

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/my_toolbar_history"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#3366DB"
@@ -15,7 +17,10 @@
         android:layout_weight="0"/>
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent">
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/conversationList"
+        android:dividerHeight="0.1dp"
+        android:divider="#000000">
     </ListView>
 </LinearLayout>

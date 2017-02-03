@@ -213,7 +213,7 @@ public class MainActivity extends VoiceActivity {
         if(nBestList!=null){
             if(nBestList.size()>0){
                 String userQuery = nBestList.get(0); //We will use the best result
-                conversation.add(userQuery);
+                conversation.add("Tú: "+userQuery);
                 //Quita los acentos del string obtenido
                 userQuery = RemoveAccents(userQuery);
                 pregunta.setText("Pregunta: " + userQuery);
@@ -273,7 +273,7 @@ public class MainActivity extends VoiceActivity {
         Log.d(LOGTAG, "Response, contents of that: "+result);
 
         result = removeTags(result);
-        conversation.add(result);
+        conversation.add("Bot: "+result);
         try {
             speak(result,spanish,ID_PROMPT_INFO);
 

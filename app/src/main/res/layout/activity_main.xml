@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#ffffff"
-    android:orientation="vertical"
-    android:paddingBottom="5dp"
-    android:weightSum="1">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/surrounding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:paddingBottom="5dp"
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#3366DB"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:minHeight="52dp"
+            android:layout_weight="0"/>
+
+        <Button
+            android:id="@+id/speech_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/speechbtn_default"
+            android:textSize="30sp"
+            android:gravity="center|center_horizontal"
+            android:layout_weight="0.1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pregunta: "
+            android:id="@+id/pregunta" />
+
+        <RelativeLayout
+            android:id="@+id/listeningCircle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0.8">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/speech_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/speechbtn_default"
-        android:textSize="30sp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pregunta: "
-        android:id="@+id/pregunta" />
-
-    <RelativeLayout
-        android:id="@+id/listeningCircle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" >
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="visible" />
-    </RelativeLayout>
-
-</LinearLayout>
+        android:id="@+id/conversation_history"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="0dp"
+        android:text="Conversation history" />
+</RelativeLayout>

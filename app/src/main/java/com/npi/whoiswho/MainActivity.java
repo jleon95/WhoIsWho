@@ -1,5 +1,7 @@
 package com.npi.whoiswho;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -8,6 +10,8 @@ import android.net.NetworkInfo;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +42,7 @@ public class MainActivity extends VoiceActivity {
     private String userKey = "e89ca9ea91e172774efd1129925b54fd";
     private String appId = "1409614129853";
     private String botName = "whoiswho";
+    private ArrayList<String> conversation = new ArrayList<>();
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
 
     Locale spanish = new Locale("spa","ESP");
@@ -51,11 +56,16 @@ public class MainActivity extends VoiceActivity {
         //Set layout
         setContentView(R.layout.activity_main);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setTitleTextColor(Color.WHITE);
+
         //Initialize the speech recognizer and synthesizer
         initSpeechInputOutput(this);
 
-        //Set up the speech button and progress circle
+        //Set up the speech button, history button and progress circle
         setSpeakButton();
+        setHistoryButton();
         showProgressBar(false);
 
         //Conecta el textView
@@ -72,6 +82,20 @@ public class MainActivity extends VoiceActivity {
                 //Start ASR
                 indicateListening();
                 startListening();
+            }
+        });
+    }
+
+    private void setHistoryButton() {
+        this.setDefaultButtonAppearance();
+        Button history = (Button) findViewById(R.id.conversation_history);
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent showHistory = new Intent(MainActivity.this, ConversationHistoryActivity.class);
+                showHistory.putStringArrayListExtra("historyArray",conversation);
+                startActivity(showHistory);
             }
         });
     }
@@ -189,7 +213,7 @@ public class MainActivity extends VoiceActivity {
         if(nBestList!=null){
             if(nBestList.size()>0){
                 String userQuery = nBestList.get(0); //We will use the best result
-
+                conversation.add(userQuery);
                 //Quita los acentos del string obtenido
                 userQuery = RemoveAccents(userQuery);
                 pregunta.setText("Pregunta: " + userQuery);
@@ -249,6 +273,7 @@ public class MainActivity extends VoiceActivity {
         Log.d(LOGTAG, "Response, contents of that: "+result);
 
         result = removeTags(result);
+        conversation.add(result);
         try {
             speak(result,spanish,ID_PROMPT_INFO);
 

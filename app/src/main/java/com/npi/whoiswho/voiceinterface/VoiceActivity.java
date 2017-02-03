@@ -17,6 +17,7 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class VoiceActivity extends Activity implements RecognitionListener, OnInitListener{
+public abstract class VoiceActivity extends AppCompatActivity implements RecognitionListener, OnInitListener{
 
     private final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 22;
     private SpeechRecognizer myASR;

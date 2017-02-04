@@ -201,8 +201,10 @@ public class MainActivity extends VoiceActivity {
         if(nBestList!=null){
             if(nBestList.size()>0){
                 String userQuery = nBestList.get(0); //We will use the best result
-                conversation.add("Tú: "+userQuery);
                 pregunta.setText("He entendido: " + userQuery);
+                //Guarda la línea bien formateada en la conversación.
+                userQuery = userQuery.substring(0,1).toUpperCase()+ userQuery.substring(1);
+                conversation.add("Tú: "+userQuery+".");
                 //Quita los acentos del string obtenido
                 userQuery = RemoveAccents(userQuery);
 
@@ -248,7 +250,8 @@ public class MainActivity extends VoiceActivity {
         }
 
         try {
-            speak(errormsg, "EN", ID_PROMPT_INFO);
+            speak(errormsg, spanish, ID_PROMPT_INFO);
+            conversation.add("Bot: "+errormsg+".");
             Log.e(LOGTAG, getResources().getString(R.string.connectionerror_prompt));
         } catch (Exception e) {
             Log.e(LOGTAG, "The message '" + errormsg + "' could not be synthesized");
@@ -261,7 +264,7 @@ public class MainActivity extends VoiceActivity {
         Log.d(LOGTAG, "Response, contents of that: "+result);
 
         result = removeTags(result);
-        conversation.add("Bot: "+result);
+        conversation.add("Bot: "+result+".");
         try {
             speak(result,spanish,ID_PROMPT_INFO);
 

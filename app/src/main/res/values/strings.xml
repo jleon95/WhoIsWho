@@ -3,10 +3,10 @@
 
     <string name="app_name">WhoIsWho</string>
 
-    <string name="nomatch_prompt">Sorry, I don\'t know how to answer to that</string>
-    <string name="iderror_prompt">The app id, user key or bot name are invalid</string>
-    <string name="connectionerror_prompt">An error has occurred when trying to connect to Pandorabots</string>
-    <string name="parseerror_prompt">An error has occurred while parsing the bot response</string>
+    <string name="nomatch_prompt">Lo siento, no sé qué responder a eso</string>
+    <string name="iderror_prompt">El ID de la aplicación, el usuario o el bot son inválidos</string>
+    <string name="connectionerror_prompt">Ha ocurrido un error al conectar con Pandorabots</string>
+    <string name="parseerror_prompt">Ha ocurrido un error al analizar la respuesta del bot</string>
 
 
 

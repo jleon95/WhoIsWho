@@ -3,6 +3,7 @@ package com.npi.whoiswho;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -73,6 +74,9 @@ public class MainActivity extends VoiceActivity {
         setSpeakButton();
         setHistoryButton();
         setCharacterTable();
+
+        //Establece el stream de audio de media
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         //Conecta el textView
         pregunta = (TextView) findViewById(R.id.pregunta);

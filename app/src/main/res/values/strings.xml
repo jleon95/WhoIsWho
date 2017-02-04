@@ -12,8 +12,9 @@
 
     <string name="searching_prompt">Searching for</string>
 
-    <string name="speechbtn_default">Press to speak</string>
-    <string name="speechbtn_listening">I am listening!</string>
+    <string name="speechbtn_default">Pulsa y háblame</string>
+    <string name="speechbtn_listening">Te escucho</string>
+    <string name="history_button">Historial de conversación</string>
 
     <!-- Colors -->
     <color name="speechbtn_default">#EEEEEE</color>

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,6 @@ import java.util.regex.Pattern;
 import com.npi.whoiswho.pandora.PandoraConnection;
 import com.npi.whoiswho.pandora.PandoraErrorCode;
 import com.npi.whoiswho.pandora.PandoraException;
-//import com.npi.whoiswho.R;
 
 public class MainActivity extends VoiceActivity {
 
@@ -59,6 +59,8 @@ public class MainActivity extends VoiceActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setTitleTextColor(Color.WHITE);
+        myToolbar.setLogo(R.mipmap.ic_launcher);
+        myToolbar.setTitleMarginStart(50);
 
         //Initialize the speech recognizer and synthesizer
         initSpeechInputOutput(this);
@@ -66,7 +68,6 @@ public class MainActivity extends VoiceActivity {
         //Set up the speech button, history button and progress circle
         setSpeakButton();
         setHistoryButton();
-        showProgressBar(false);
 
         //Conecta el textView
         pregunta = (TextView) findViewById(R.id.pregunta);
@@ -140,17 +141,9 @@ public class MainActivity extends VoiceActivity {
         button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.speechbtn_default),PorterDuff.Mode.MULTIPLY);	//Changes the button's background to the color obtained from the resources folder
     }
 
-    private void showProgressBar(Boolean show){
-        if(show)
-            findViewById(R.id.listeningCircle).setVisibility(View.VISIBLE);
-        else
-            findViewById(R.id.listeningCircle).setVisibility(View.GONE);
-    }
-
     @Override
     public void processAsrError(int errorCode) {
         setDefaultButtonAppearance();
-        showProgressBar(false);
 
         //Possible bug in Android SpeechRecognizer: NO_MATCH errors even before the ASR
         // has even tried to recognized. We have adopted the solution proposed in:
@@ -204,19 +197,14 @@ public class MainActivity extends VoiceActivity {
     @Override
     public void processAsrResults(ArrayList<String> nBestList, float[] nBestConfidences) {
         setDefaultButtonAppearance();
-        runOnUiThread(new Runnable() {
-            public void run() {
-                showProgressBar(true); //the app has started to process the user input, so it shows the progress circle
-            }
-        });
 
         if(nBestList!=null){
             if(nBestList.size()>0){
                 String userQuery = nBestList.get(0); //We will use the best result
                 conversation.add("Tú: "+userQuery);
+                pregunta.setText("He entendido: " + userQuery);
                 //Quita los acentos del string obtenido
                 userQuery = RemoveAccents(userQuery);
-                pregunta.setText("Pregunta: " + userQuery);
 
                 try {
                     String response = pandoraConnection.talk(userQuery); //Query to pandorabots
@@ -280,7 +268,6 @@ public class MainActivity extends VoiceActivity {
         } catch (Exception e) {
             pregunta.setText("Error: " + e);
             Log.e(LOGTAG, "The message '"+result+"' could not be synthesized");
-            showProgressBar(false);
         }
     }
 
@@ -338,11 +325,6 @@ public class MainActivity extends VoiceActivity {
 
     @Override
     public void onTTSStart(String uttId) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                showProgressBar(false); //the app has finished processing the user input, so it hides the progress circle
-            }
-        });
         Log.e(LOGTAG, "TTS starts speaking");
     }
 }

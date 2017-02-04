@@ -2,6 +2,7 @@ package com.npi.whoiswho;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ import java.util.regex.Pattern;
 import com.npi.whoiswho.pandora.PandoraConnection;
 import com.npi.whoiswho.pandora.PandoraErrorCode;
 import com.npi.whoiswho.pandora.PandoraException;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends VoiceActivity {
 
@@ -68,6 +72,7 @@ public class MainActivity extends VoiceActivity {
         //Set up the speech button, history button and progress circle
         setSpeakButton();
         setHistoryButton();
+        setCharacterTable();
 
         //Conecta el textView
         pregunta = (TextView) findViewById(R.id.pregunta);
@@ -99,6 +104,38 @@ public class MainActivity extends VoiceActivity {
                 startActivity(showHistory);
             }
         });
+    }
+
+    private void setCharacterTable() {
+
+        // Obtenemos la tabla de personajes.
+        TableLayout table = (TableLayout) findViewById(R.id.characters);
+
+        // Para cada fila excepto la primera, que no sirve de nada tacharla.
+        for(int i = 1 ; i < table.getChildCount() ; i++){
+
+            // Obtenemos cada fila y definimos su onClick.
+            final TableRow row = (TableRow) table.getChildAt(i);
+            row.setClickable(true);
+            row.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v){
+
+                    TextView name = (TextView) row.getChildAt(0); // Tacharemos el nombre del personaje
+                    // Si ya se estaba tachando, se desactiva al hacer click.
+                    if((name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG) == name.getPaintFlags())
+                        name.setPaintFlags(name.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                    else // Si no, se activa el tachado.
+                        name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+
+            });
+
+
+        }
+
+
     }
 
     public void showRecordPermissionExplanation(){

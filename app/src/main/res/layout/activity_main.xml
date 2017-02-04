@@ -59,7 +59,8 @@
                 <TableRow
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:stretchColumns="*">
+                    android:stretchColumns="*"
+                    android:id="@+id/alejandro">
                     <TextView
                         android:text="Nombre"
                         android:padding="4dip"

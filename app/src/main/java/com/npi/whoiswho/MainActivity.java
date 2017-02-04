@@ -15,6 +15,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -33,7 +36,6 @@ import com.npi.whoiswho.pandora.PandoraConnection;
 import com.npi.whoiswho.pandora.PandoraErrorCode;
 import com.npi.whoiswho.pandora.PandoraException;
 
-import org.w3c.dom.Text;
 
 public class MainActivity extends VoiceActivity {
 
@@ -72,7 +74,6 @@ public class MainActivity extends VoiceActivity {
 
         //Set up the speech button, history button and progress circle
         setSpeakButton();
-        setHistoryButton();
         setCharacterTable();
 
         //Establece el stream de audio de media
@@ -80,6 +81,35 @@ public class MainActivity extends VoiceActivity {
 
         //Conecta el textView
         pregunta = (TextView) findViewById(R.id.pregunta);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch(item.getItemId()){
+
+            case R.id.help:
+                Intent showHelp = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(showHelp);
+                return true;
+            case R.id.history:
+                Intent showHistory = new Intent(MainActivity.this, ConversationHistoryActivity.class);
+                showHistory.putStringArrayListExtra("historyArray",conversation);
+                startActivity(showHistory);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     private void setSpeakButton() {
@@ -92,20 +122,6 @@ public class MainActivity extends VoiceActivity {
                 //Start ASR
                 indicateListening();
                 startListening();
-            }
-        });
-    }
-
-    private void setHistoryButton() {
-        this.setDefaultButtonAppearance();
-        Button history = (Button) findViewById(R.id.conversation_history);
-        history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent showHistory = new Intent(MainActivity.this, ConversationHistoryActivity.class);
-                showHistory.putStringArrayListExtra("historyArray",conversation);
-                startActivity(showHistory);
             }
         });
     }
@@ -305,7 +321,7 @@ public class MainActivity extends VoiceActivity {
         Log.d(LOGTAG, "Response, contents of that: "+result);
 
         result = removeTags(result);
-        conversation.add("Bot: "+result+".");
+        conversation.add("Bot: "+result);
         try {
             speak(result,spanish,ID_PROMPT_INFO);
 

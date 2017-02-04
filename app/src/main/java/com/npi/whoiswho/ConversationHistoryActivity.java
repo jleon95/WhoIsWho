@@ -42,6 +42,4 @@ public class ConversationHistoryActivity extends AppCompatActivity {
                 android.R.layout.simple_expandable_list_item_1,conversation);
         listView.setAdapter(arrayAdapter);
     }
-
-
 }

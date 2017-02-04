@@ -2,15 +2,15 @@
 <resources>
 
     <string name="app_name">WhoIsWho</string>
+    <string name="conversation_history_name">Historial de conversación</string>
+    <string name="help_name">Ayuda</string>
 
     <string name="nomatch_prompt">Lo siento, no sé qué responder a eso</string>
     <string name="iderror_prompt">El ID de la aplicación, el usuario o el bot son inválidos</string>
     <string name="connectionerror_prompt">Ha ocurrido un error al conectar con Pandorabots</string>
     <string name="parseerror_prompt">Ha ocurrido un error al analizar la respuesta del bot</string>
 
-
-
-    <string name="searching_prompt">Searching for</string>
+    <string name="searching_prompt">Buscando</string>
 
     <string name="speechbtn_default">Pulsa y háblame</string>
     <string name="speechbtn_listening">Te escucho</string>
@@ -19,4 +19,18 @@
     <!-- Colors -->
     <color name="speechbtn_default">#EEEEEE</color>
     <color name="speechbtn_listening">#99FFBB</color>
+
+    <!-- Ayuda -->
+    <string-array name="help_items">
+        <item>Inicia una nueva partida diciendo: \"Juguemos\" o \"Vamos a jugar\".</item>
+        <item>El juego consiste simplemente en acertar el personaje que ha elegido el bot.</item>
+        <item>Con este objetivo hemos de realizarle preguntas de \"Sí\" o \"No\" acerca de sus características físicas.</item>
+        <item>Como ayuda, puedes tachar los personajes que descartes y consultar el historial de la conversación.</item>
+        <item>Sin embargo, ya que se trata de un bot, tenemos ciertas restricciones a la hora de formular nuestras preguntas.</item>
+        <item>Para preguntar por el pelo, el formato es: ¿Tiene el pelo *?</item>
+        <item>Para preguntar por los ojos, el formato es: ¿Tiene los ojos *?</item>
+        <item>Para preguntar por el color de piel, el formato es: ¿Tiene la piel *?</item>
+        <item>Para preguntar por gafas, bigote o barba, el formato es: ¿Tiene *?</item>
+        <item>Para preguntar si es hombre o mujer, el formato es: ¿Es *?</item>
+    </string-array>
 </resources>

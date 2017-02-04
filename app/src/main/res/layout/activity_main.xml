@@ -841,14 +841,4 @@
             </TableLayout>
         </HorizontalScrollView>
     </ScrollView>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/conversation_history"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textAllCaps="false"
-        android:elevation="0dp"
-        android:text="@string/history_button" />
 </RelativeLayout>

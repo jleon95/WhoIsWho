@@ -39,7 +39,7 @@ public class PandoraConnection {
         String responses = "";
         input = input.replace(" ", "%20");
 
-        URI uri = null;
+        URI uri;
         try {
             uri = new URI("https://"+host+"/talk/"+appId+"/"+botName+"?input="+input+"&user_key="+userKey);
             Log.d(LOGTAG, "Request to pandorabot: Botname=" + botName + ", input=\"" + input + "\"" + " uri="+ uri);

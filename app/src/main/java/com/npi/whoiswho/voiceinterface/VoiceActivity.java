@@ -63,11 +63,11 @@ public abstract class VoiceActivity extends AppCompatActivity implements Recogni
                 != PackageManager.PERMISSION_GRANTED) {
 
             // If  an explanation is required, show it
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) ctx, Manifest.permission.RECORD_AUDIO))
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ctx, Manifest.permission.RECORD_AUDIO))
                 showRecordPermissionExplanation();
 
             // Request the permission.
-            ActivityCompat.requestPermissions((Activity) ctx, new String[]{Manifest.permission.RECORD_AUDIO},
+            ActivityCompat.requestPermissions(ctx, new String[]{Manifest.permission.RECORD_AUDIO},
                     MY_PERMISSIONS_REQUEST_RECORD_AUDIO); //Callback in "onRequestPermissionResult"
         }
     }
@@ -189,7 +189,7 @@ public abstract class VoiceActivity extends AppCompatActivity implements Recogni
     @SuppressWarnings("deprecation")
     public void setTTS()
     {
-        myTTS = new TextToSpeech(ctx,(OnInitListener) this);
+        myTTS = new TextToSpeech(ctx,this);
 
 		/*
 		 * The listener for the TTS events varies depending on the Android version used:
@@ -299,7 +299,7 @@ public abstract class VoiceActivity extends AppCompatActivity implements Recogni
 
         } else {
 
-            HashMap<String, String> params = new HashMap<String, String>();
+            HashMap<String, String> params = new HashMap<>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
 
             myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
@@ -319,56 +319,11 @@ public abstract class VoiceActivity extends AppCompatActivity implements Recogni
 
         } else {
 
-            HashMap<String, String> params = new HashMap<String, String>();
+            HashMap<String, String> params = new HashMap<>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
 
             myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
         }
-    }
-
-    public void speak(String text, String languageCode, Integer id) throws Exception{
-
-        setLocale(languageCode);
-
-        if (Build.VERSION.SDK_INT >= 21) {
-
-            Bundle params = new Bundle();
-            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-
-            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params, "msg_id");
-
-        } else {
-
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-
-            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
-        }
-    }
-
-    public void speak(String text, Integer id){
-
-        setLocale();
-
-        if (Build.VERSION.SDK_INT >= 21) {
-
-            Bundle params = new Bundle();
-            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-
-            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params, "msg_id");
-
-        } else {
-
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, id.toString());
-
-            myTTS.speak(text, TextToSpeech.QUEUE_ADD, params);
-        }
-    }
-
-    public void stop(){
-        if(myTTS.isSpeaking())
-            myTTS.stop();
     }
 
     public void shutdown(){

@@ -355,9 +355,9 @@ public class MainActivity extends VoiceActivity {
 
     public String RemoveAccents(String original) {
 
-        // Cadena con los caracteres acentuados, ñ y dieresis.
+        // Cadena con los caracteres acentuados, ñ y diéresis.
         String acentos = "áéíóúüÁÉÍÓÚÜ";
-        // Cadena de caracteres sin acentos, ñ o dieresis.
+        // Cadena de caracteres sin acentos, ñ o diéresis.
         String sin_acentos = "aeiouuAEIOUU";
 
         String resultado = original;

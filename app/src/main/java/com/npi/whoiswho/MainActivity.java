@@ -1,3 +1,15 @@
+/*
+Base code for interaction with the PandoraBots API extracted from:
+
+https://github.com/zoraidacallejas/ConversationalInterface/tree/master/chapter7/TalkBot
+
+This activity handles the main components of the Guess Who game. It contains:
+ -The button that allows us to talk to the bot over the Internet.
+ -The field where we can see what the speech recognizer has understood.
+ -A table with all the characters and their features
+ -A menu icon for the help and conversation history pages.
+*/
+
 package com.npi.whoiswho;
 
 import android.content.Intent;
@@ -12,7 +24,6 @@ import android.net.NetworkInfo;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,8 +36,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.npi.whoiswho.voiceinterface.VoiceActivity;
-
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -35,6 +44,7 @@ import java.util.regex.Pattern;
 import com.npi.whoiswho.pandora.PandoraConnection;
 import com.npi.whoiswho.pandora.PandoraErrorCode;
 import com.npi.whoiswho.pandora.PandoraException;
+import com.npi.whoiswho.voiceinterface.VoiceActivity;
 
 
 public class MainActivity extends VoiceActivity {
@@ -46,8 +56,8 @@ public class MainActivity extends VoiceActivity {
     private long startListeningTime = 0; // To skip errors (see processAsrError method)
 
     private String host = "aiaas.pandorabots.com";
-    private String userKey = "e89ca9ea91e172774efd1129925b54fd";
-    private String appId = "1409614129853";
+    private String userKey = "3223f25e9022d6b4291ea3f0ef4f4fe4";
+    private String appId = "1409614146927";
     private String botName = "whoiswho";
     private ArrayList<String> conversation = new ArrayList<>();
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
@@ -79,7 +89,7 @@ public class MainActivity extends VoiceActivity {
         //Establece el stream de audio de media
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        //Conecta el textView
+        //Conecta el textView que nos indica qué ha entendido el reconocedor de voz
         pregunta = (TextView) findViewById(R.id.pregunta);
     }
 
@@ -151,11 +161,7 @@ public class MainActivity extends VoiceActivity {
                 }
 
             });
-
-
         }
-
-
     }
 
     public void showRecordPermissionExplanation(){
@@ -245,7 +251,6 @@ public class MainActivity extends VoiceActivity {
                 try { speak(errorMsg,"spa","ESP", ID_PROMPT_INFO); } catch (Exception e) { Log.e(LOGTAG, "TTS not accessible"); }
             }
         }
-
     }
 
     @Override

@@ -31,7 +31,10 @@
             android:textAllCaps="false"
             android:textSize="27sp"
             android:gravity="center|center_horizontal"
-            android:layout_weight="0.1"/>
+            android:layout_weight="0.1"
+            android:background="@color/colorAccent"
+            android:theme="@style/AppTheme.Button"
+            style="@style/Widget.AppCompat.Button.Colored"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -46,7 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear"
-        android:layout_above="@+id/conversation_history"
         android:layout_margin="5dp">
         <HorizontalScrollView
             android:layout_width="match_parent"

@@ -1,3 +1,8 @@
+/*
+From:
+https://github.com/zoraidacallejas/ConversationalInterface/tree/master/chapter7/TalkBot
+ */
+
 package com.npi.whoiswho.pandora;
 
 public class PandoraException extends Throwable {

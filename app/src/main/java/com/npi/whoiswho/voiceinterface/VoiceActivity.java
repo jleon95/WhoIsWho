@@ -1,3 +1,9 @@
+/*
+From:
+https://github.com/zoraidacallejas/ConversationalInterface/tree/master/chapter7/TalkBot
+(With a few changes)
+ */
+
 package com.npi.whoiswho.voiceinterface;
 
 import android.Manifest;

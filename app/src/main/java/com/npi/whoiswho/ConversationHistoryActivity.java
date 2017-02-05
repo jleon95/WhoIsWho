@@ -1,3 +1,7 @@
+/*
+A conversation history, in case you don't remember something.
+ */
+
 package com.npi.whoiswho;
 
 

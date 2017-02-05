@@ -1,3 +1,7 @@
+/*
+A bit of help for playing this game.
+ */
+
 package com.npi.whoiswho;
 
 import android.graphics.Color;

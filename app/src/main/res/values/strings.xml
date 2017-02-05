@@ -23,14 +23,14 @@
     <!-- Ayuda -->
     <string-array name="help_items">
         <item>Inicia una nueva partida diciendo: \"Juguemos\" o \"Vamos a jugar\".</item>
-        <item>El juego consiste simplemente en acertar el personaje que ha elegido el bot.</item>
-        <item>Con este objetivo hemos de realizarle preguntas de \"Sí\" o \"No\" acerca de sus características físicas.</item>
+        <item>El juego consiste en acertar el personaje que ha elegido el bot. Con este objetivo hemos de realizarle preguntas de \"Sí\" o \"No\" acerca de sus características.</item>
         <item>Como ayuda, puedes tachar los personajes que descartes y consultar el historial de la conversación.</item>
         <item>Sin embargo, ya que se trata de un bot, tenemos ciertas restricciones a la hora de formular nuestras preguntas.</item>
-        <item>Para preguntar por el pelo, el formato es: ¿Tiene el pelo *?</item>
-        <item>Para preguntar por los ojos, el formato es: ¿Tiene los ojos *?</item>
-        <item>Para preguntar por el color de piel, el formato es: ¿Tiene la piel *?</item>
-        <item>Para preguntar por gafas, bigote o barba, el formato es: ¿Tiene *?</item>
-        <item>Para preguntar si es hombre o mujer, el formato es: ¿Es *?</item>
+        <item>Para preguntar por el pelo, el formato es: \"¿Tiene el pelo *?\" o \"¿Es calvo?\"</item>
+        <item>Para preguntar por los ojos, el formato es: \"¿Tiene los ojos *?\"</item>
+        <item>Para preguntar por el color de piel, el formato es: \"¿Tiene la piel *?\"</item>
+        <item>Para preguntar por gafas, bigote o barba, el formato es: \"¿Tiene *?\" o \"¿Lleva *?\"</item>
+        <item>Para preguntar si es hombre o mujer, el formato es: \"¿Es *?\"</item>
+        <item>Adivina con: \"El personaje es *\" o \"Se trata de *\".</item>
     </string-array>
 </resources>

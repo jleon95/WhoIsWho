@@ -41,9 +41,6 @@
 						<set name="personaje">gabriela</set>
 					</li>
 					<li>
-						<set name="personaje">ivan</set>
-					</li>
-					<li>
 						<set name="personaje">javier</set>
 					</li>
 					<li>
@@ -66,6 +63,9 @@
 					</li>
 					<li>
 						<set name="personaje">pepe</set>
+					</li>
+					<li>
+						<set name="personaje">roberto</set>
 					</li>
 					<li>
 						<set name="personaje">sofia</set>
@@ -99,7 +99,7 @@
 	<template>
 		<think>
 			<set name="topic">botpregunta</set>
-			<set name="candidatos">alejandro alfonso antonio cristina gabriela ivan javier juan laura luis marco maria paco pepe sofia sonia</set>
+			<set name="candidatos">alejandro alfonso antonio cristina gabriela javier juan laura luis marco maria paco pepe roberto sofia sonia</set>
 			<set name="pregunta">1</set>
 			<set name="pelo">unknown</set>
 			<set name="ojos">unknown</set>

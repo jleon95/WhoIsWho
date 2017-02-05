@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<topic name="jugadorpregunta">
+
+<!--Preguntas para conocer a los personajes-->
+<category>
+	<pattern>* TIENE EL PELO *</pattern>
+	<template>
+		<think>
+			<set var="busqueda">
+				<srai>FINDITEM <star index="2"/> IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="busqueda">
+			<li value="0">
+				No, <star/> no tiene el pelo <star index="2"/>.
+			</li>
+			<li value="1">
+				Sí, <star/> tiene el pelo <star index="2"/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>* TIENE LOS OJOS *</pattern>
+	<template>
+		<think>
+			<set var="busqueda">
+				<srai>FINDITEM <star index="2"/> IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="busqueda">
+			<li value="0">
+				No, <star/> no tiene los ojos <star index="2"/>.
+			</li>
+			<li value="2">
+				Sí, <star/> tiene los ojos <star index="2"/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>* TIENE LA PIEL *</pattern>
+	<template>
+		<think>
+			<set var="busqueda">
+				<srai>FINDITEM <star index="2"/> IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="busqueda">
+			<li value="0">
+				No, <star/> no tiene la piel <star index="2"/>.
+			</li>
+			<li value="3">
+				Sí, <star/> tiene la piel <star index="2"/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>* ES *</pattern>
+	<template>
+		<think>
+			<set var="busqueda">
+				<srai>FINDITEM <star index="2"/> IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="busqueda">
+			<li value="0">
+				No, <star/> no es <star index="2"/>.
+			</li>
+			<li value="7">
+				Sí, <star/> es <star index="2"/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>* TIENE GAFAS</pattern>
+	<template>
+		<think>
+			<set var="gafas">
+				<srai>SELECTITEM 4 IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="gafas">
+			<li value="no">
+				No, <star/> no tiene gafas.
+			</li>
+			<li value="si">
+				Sí, <star/> tiene gafas.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>* TIENE BIGOTE</pattern>
+	<template>
+		<think>
+			<set var="bigote">
+				<srai>SELECTITEM 5 IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="bigote">
+			<li value="no">
+				No, <star/> no tiene bigote.
+			</li>
+			<li value="si">
+				Sí, <star/> tiene bigote.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>* TIENE BARBA</pattern>
+	<template>
+		<think>
+			<set var="barba">
+				<srai>SELECTITEM 6 IN <map name="personajes"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="barba">
+			<li value="no">
+				No, <star/> no tiene barba.
+			</li>
+			<li value="si">
+				Sí, <star/> tiene barba.
+			</li>
+		</condition>
+	</template>
+</category>
+
+
+<!--Preguntas acerca del personaje que ha pensado el bot-->
+
+<!--Pelo.-->
+<category>
+	<pattern>TIENE EL PELO *</pattern>
+	<template>
+		<think>
+			<set var="existe">
+				<srai>FINDITEM <star/> IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="existe">
+			<li value="0">
+				No tiene el pelo <star/>.
+			</li>
+			<li>
+				Sí, tiene el pelo <star/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>ES SU PELO *</pattern>
+	<template><srai>TIENE EL PELO <star/></srai></template>
+</category>
+
+<category>
+	<pattern>ES CALVO</pattern>
+	<template>
+		<think>
+			<set var="existe">
+				<srai>FINDITEM CALVO IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="existe">
+			<li value="0">
+				No es calvo.
+			</li>
+			<li>
+				Sí, es calvo.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<!--Ojos.-->
+<category>
+	<pattern>TIENE LOS OJOS *</pattern>
+	<template>
+		<think>
+			<set var="existe">
+				<srai>FINDITEM <star/> IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="existe">
+			<li value="0">
+				No tiene los ojos <star/>.
+			</li>
+			<li>
+				Sí, tiene los ojos <star/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<!--Color de piel.-->
+<category>
+	<pattern>TIENE LA PIEL *</pattern>
+	<template>
+		<think>
+			<set var="existe">
+				<srai>FINDITEM <star/> IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="existe">
+			<li value="0">
+				No tiene la piel <star/>.
+			</li>
+			<li>
+				Sí, tiene la piel <star/>.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<!--Tiene o no gafas.-->
+<category>
+	<pattern>TIENE GAFAS</pattern>
+	<template>
+		<think>
+			<set var="gafas">
+				<srai>SELECTITEM 4 IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="gafas">
+			<li value="no">
+				No tiene gafas.
+			</li>
+			<li value="si">
+				Sí, tiene gafas.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>LLEVA GAFAS</pattern>
+	<template><srai>TIENE GAFAS</srai></template>
+</category>
+
+<!--Tiene o no bigote.-->
+<category>
+	<pattern>TIENE BIGOTE</pattern>
+	<template>
+		<think>
+			<set var="bigote">
+				<srai>SELECTITEM 5 IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="bigote">
+			<li value="no">
+				No tiene bigote.
+			</li>
+			<li value="si">
+				Sí, tiene bigote.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>LLEVA BIGOTE</pattern>
+	<template><srai>TIENE BIGOTE</srai></template>
+</category>
+
+<!--Tiene o no barba.-->
+<category>
+	<pattern>TIENE BARBA</pattern>
+	<template>
+		<think>
+			<set var="barba">
+				<srai>SELECTITEM 6 IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="barba">
+			<li value="no">
+				No tiene barba.
+			</li>
+			<li value="si">
+				Sí, tiene barba.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>LLEVA BARBA</pattern>
+	<template><srai>TIENE BARBA</srai></template>
+</category>
+
+<!--Es un hombre o una mujer.-->
+<category>
+	<pattern>ES ^ HOMBRE</pattern>
+	<template>
+		<think>
+			<set var="existe">
+				<srai>FINDITEM HOMBRE IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="existe">
+			<li value="0">
+				No es un hombre.
+			</li>
+			<li>
+				Sí, es un hombre.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>ES ^ MUJER</pattern>
+	<template>
+		<think>
+			<set var="existe">
+				<srai>FINDITEM MUJER IN <get name="propiedades"/></srai>
+			</set>
+		</think>
+		<condition var="existe">
+			<li value="0">
+				No es una mujer.
+			</li>
+			<li>
+				Sí, es una mujer.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<!--El personaje es...-->
+<category>
+	<pattern>EL PERSONAJE ES *</pattern>
+	<template>
+		<condition name="personaje">
+			<li> 
+				<value><star/></value>
+				Correcto. El personaje es <star/>.
+			</li>
+			<li>
+				No es correcto.
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>SE TRATA DE *</pattern>
+	<template><srai>EL PERSONAJE ES <star/></srai></template>
+</category>
+
+</topic>
+
+</aiml>

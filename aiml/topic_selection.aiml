@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<category>
+	<pattern>JUGUEMOS</pattern>
+	<template><srai>VAMOS A JUGAR</srai></template>
+</category>
+
+<category>
+	<pattern>VAMOS A JUGAR</pattern>
+	<template>Quien pregunta?</template>
+</category>
+
+<category>
+	<pattern>YO</pattern>
+	<that>QUIEN PREGUNTA</that>
+	<template><srai>YO PREGUNTO</srai></template>
+</category>
+
+<category>
+	<pattern>YO PREGUNTO</pattern>
+	<that>QUIEN PREGUNTA</that>
+	<template>
+		<think>
+			<set name="topic">jugadorpregunta</set>
+			<topic name="jugadorpregunta">
+				<random>
+					<li>
+						<set name="personaje">alejandro</set>
+					</li>
+					<li>
+						<set name="personaje">alfonso</set>
+					</li>
+					<li>
+						<set name="personaje">antonio</set>
+					</li>
+					<li>
+						<set name="personaje">cristina</set>
+					</li>
+					<li>
+						<set name="personaje">gabriela</set>
+					</li>
+					<li>
+						<set name="personaje">ivan</set>
+					</li>
+					<li>
+						<set name="personaje">javier</set>
+					</li>
+					<li>
+						<set name="personaje">juan</set>
+					</li>
+					<li>
+						<set name="personaje">laura</set>
+					</li>
+					<li>
+						<set name="personaje">luis</set>
+					</li>
+					<li>
+						<set name="personaje">marco</set>
+					</li>
+					<li>
+						<set name="personaje">maria</set>
+					</li>
+					<li>
+						<set name="personaje">paco</set>
+					</li>
+					<li>
+						<set name="personaje">pepe</set>
+					</li>
+					<li>
+						<set name="personaje">sofia</set>
+					</li>
+					<li>
+						<set name="personaje">sonia</set>
+					</li>
+				</random>
+				<set name="propiedades">
+					<map name="personajes"><get name="personaje"/></map>
+				</set>
+			</topic>
+		</think>
+		<random>
+			<li>De acuerdo. Ya he pensado un personaje.</li>
+			<li>Vale. Ya he elegido un personaje.</li>
+			<li>Ya he escogido un personaje. Puedes preguntarme.</li>
+		</random>
+	</template>
+</category>
+
+<category>
+	<pattern>TU</pattern>
+	<that>QUIEN PREGUNTA</that>
+	<template><srai>TU PREGUNTAS</srai></template>
+</category>
+
+<category>
+	<pattern>TU PREGUNTAS</pattern>
+	<that>QUIEN PREGUNTA</that>
+	<template>
+		<think>
+			<set name="topic">botpregunta</set>
+			<set name="candidatos">alejandro alfonso antonio cristina gabriela ivan javier juan laura luis marco maria paco pepe sofia sonia</set>
+			<set name="pregunta">1</set>
+			<set name="pelo">unknown</set>
+			<set name="ojos">unknown</set>
+			<set name="piel">unknown</set>
+			<set name="gafas">unknown</set>
+			<set name="barba">unknown</set>
+			<set name="bigote">unknown</set>
+			<set name="genero">unknown</set>
+
+			<set name="moreno">unknown</set>
+			<set name="rubio">unknown</set>
+			<set name="blanco">unknown</set>
+			<set name="calvo">unknown</set>
+			<set name="marron">unknown</set>
+			<set name="pelirrojo">unknown</set>
+		</think>
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+</aiml>

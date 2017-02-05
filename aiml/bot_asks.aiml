@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<topic name="botpregunta">
+
+<!--Regla para que el agente me diga los candidatos que le quedan (utilidad para probar el funcionamiento)-->
+<category>
+	<pattern>DIME LOS CANDIDATOS</pattern>
+	<template>
+		<get name="candidatos"/>
+	</template>
+</category>
+
+<!--Reglas para lanzar las preguntas-->
+
+<category>
+	<pattern>PREGUNTAR</pattern>
+	<template>
+		<condition name="pregunta">
+			<li value="1">
+				<random>
+					<li>Es hombre?</li>
+					<li>Es mujer?</li>
+				</random>
+			</li>
+			<li value="2">
+				Tiene bigote?
+				<think>
+					<set name="pregunta">3</set>
+				</think>
+			</li>
+			<li value="3">
+				Tiene barba?
+				<think>
+					<set name="pregunta">4</set>
+				</think>
+			</li>
+			<li value="4">
+				Tiene gafas?
+				<think>
+					<set name="pregunta">5</set>
+				</think>
+			</li>
+			<li value="5">
+				<random>
+					<li>Tiene la piel clara?</li>
+					<li>Tiene la piel oscura?</li>
+				</random>
+				<think>
+					<set name="pregunta">6</set>
+				</think>
+			</li>
+			<li value="6">
+				<random>
+					<li>Tiene los ojos claros?</li>
+					<li>Tiene los ojos oscuros?</li>
+				</random>
+				<think>
+					<set name="pregunta">7</set>
+				</think>
+			</li>
+			<li value="7">
+				<condition name="pelo">
+					<li value="unknown">
+						<random><!--Hay que tener en cuenta las variables para no repetir la misma pregunta-->
+							<li>
+								<condition name="moreno">
+									<li value="unknown">Tiene el pelo moreno?</li>
+									<li><srai>PREGUNTAR</srai></li>
+								</condition>
+							</li>
+							<li>
+								<condition name="rubio">
+									<li value="unknown">Tiene el pelo rubio?</li>
+									<li><srai>PREGUNTAR</srai></li>
+								</condition>
+							</li>
+							<li>
+								<condition name="blanco">
+									<li value="unknown">Tiene el pelo blanco?</li>
+									<li><srai>PREGUNTAR</srai></li>
+								</condition>
+							</li>
+							<li>
+								<condition name="pelirrojo">
+									<li value="unknown">Tiene el pelo rojo?</li>
+									<li><srai>PREGUNTAR</srai></li>
+								</condition>
+							</li>
+							<li>
+								<condition name="marron">
+									<li value="unknown">Tiene el pelo marron?</li>
+									<li><srai>PREGUNTAR</srai>
+								</li>
+								</condition>
+							</li>
+							<li>
+								<condition name="calvo">
+									<li value="unknown">Es calvo?</li>
+									<li><srai>PREGUNTAR</srai></li>
+								</condition>
+							</li>
+						</random>
+					</li>
+					<li></li>
+				</condition>
+			</li>
+		</condition>
+	</template>
+</category>
+
+<category>
+	<pattern>ADIVINAR</pattern>
+	<template>
+		<think>
+			<set var="restantes">
+				<srai>COUNT <get name="candidatos"/></srai>
+			</set>
+		</think>
+		<condition var="restantes">
+			<li value="0">
+				Me has engañado porque no hay personaje que cumpla las anteriores condiciones junto con esta.
+			</li>
+			<li value="1">
+				Creo que el personaje es <get name="candidatos"/>
+			</li>
+			<li><srai>PREGUNTAR</srai></li>
+		</condition>
+	</template>
+</category>
+
+<!--Reglas para reaccionar a la respuesta de si el personaje es *-->
+<category>
+	<pattern>SI ^</pattern>
+	<that>CREO QUE EL PERSONAJE ES *</that>
+	<template>Quieres volver a jugar?</template>
+</category>
+
+<category>
+	<pattern>NO ^</pattern>
+	<that>CREO QUE EL PERSONAJE ES *</that>
+	<template>
+		Me has mentido porque solo quedaba uno y me has dicho que no es.
+	</template>
+</category>
+
+<!--Reglas para volver o no a jugar si el bot acierta o nos pilla mintiendo-->
+<category>
+	<pattern>SI</pattern>
+	<that>QUIERES VOLVER A JUGAR</that>
+	<template><srai>VAMOS A JUGAR AL QUIEN ES QUIEN</srai></template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>QUIERES VOLVER A JUGAR</that>
+	<template>Asumo entonces que quieres hablar sobre la asignatura.</template>
+</category>
+
+<category>
+	<pattern>ME HAS PILLADO</pattern>
+	<that>ME HAS MENTIDO PORQUE SOLO QUEDABA UNO Y ME HAS DICHO QUE NO ES</that>
+	<template>Quieres volver a jugar?</template>
+</category>
+
+<category>
+	<pattern>ME HAS PILLADO</pattern>
+	<that>ME HAS ENGAÑADO PORQUE NO HAY PERSONAJE QUE CUMPLA LAS ANTERIORES CONDICIONES JUNTO CON ESTA</that>
+	<template>Quieres volver a jugar?</template>
+</category>
+
+<!--Regla para descartar los candidatos con un color de pelo concreto-->
+<category>
+	<pattern>DESCARTA *</pattern>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="pelo"><star/></map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+	</template>
+</category>
+
+
+<!--Respuestas a las preguntas-->
+
+<!--¿Tiene el pelo *?-->
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE EL PELO MORENO</that>
+	<template>
+		<think>
+			<set name="pelo">moreno</set>
+			<set name="moreno">si</set>
+			<set name="rubio">no</set>
+			<set name="blanco">no</set>
+			<set name="calvo">no</set>
+			<set name="pelirrojo">no</set>
+			<set name="marron">no</set>
+		</think>
+
+		<srai>DESCARTA RUBIO</srai>
+		<srai>DESCARTA BLANCO</srai>
+		<srai>DESCARTA CALVO</srai>
+		<srai>DESCARTA PELIRROJO</srai>
+		<srai>DESCARTA MARRON</srai>
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE EL PELO MORENO</that>
+	<template>
+		<think>
+			<set name="moreno">no</set>
+		</think>
+		<srai>DESCARTA MORENO</srai>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE EL PELO BLANCO</that>
+	<template>
+		<think>
+			<set name="pelo">blanco</set>
+			<set name="moreno">no</set>
+			<set name="rubio">no</set>
+			<set name="blanco">si</set>
+			<set name="calvo">no</set>
+			<set name="pelirrojo">no</set>
+			<set name="marron">no</set>
+		</think>
+
+		<srai>DESCARTA RUBIO</srai>
+		<srai>DESCARTA MORENO</srai>
+		<srai>DESCARTA CALVO</srai>
+		<srai>DESCARTA PELIRROJO</srai>
+		<srai>DESCARTA MARRON</srai>
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE EL PELO BLANCO</that>
+	<template>
+		<think>
+			<set name="blanco">no</set>
+		</think>
+		<srai>DESCARTA BLANCO</srai>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE EL PELO RUBIO</that>
+	<template>
+		<think>
+			<set name="pelo">rubio</set>
+			<set name="moreno">no</set>
+			<set name="rubio">si</set>
+			<set name="blanco">no</set>
+			<set name="calvo">no</set>
+			<set name="pelirrojo">no</set>
+			<set name="marron">no</set>
+		</think>
+
+		<srai>DESCARTA MORENO</srai>
+		<srai>DESCARTA BLANCO</srai>
+		<srai>DESCARTA CALVO</srai>
+		<srai>DESCARTA PELIRROJO</srai>
+		<srai>DESCARTA MARRON</srai>
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE EL PELO RUBIO</that>
+	<template>
+		<think>
+			<set name="rubio">no</set>
+		</think>
+		<srai>DESCARTA RUBIO</srai>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE EL PELO ROJO</that>
+	<template>
+		<think>
+			<set name="pelo">pelirrojo</set>
+			<set name="moreno">no</set>
+			<set name="rubio">no</set>
+			<set name="blanco">no</set>
+			<set name="calvo">no</set>
+			<set name="pelirrojo">si</set>
+			<set name="marron">no</set>
+		</think>
+
+		<srai>DESCARTA RUBIO</srai>
+		<srai>DESCARTA BLANCO</srai>
+		<srai>DESCARTA CALVO</srai>
+		<srai>DESCARTA MORENO</srai>
+		<srai>DESCARTA MARRON</srai>
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE EL PELO ROJO</that>
+	<template>
+		<think>
+			<set name="pelirrojo">no</set>
+		</think>
+		<srai>DESCARTA PELIRROJO</srai>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE EL PELO MARRON</that>
+	<template>
+		<think>
+			<set name="pelo">marron</set>
+			<set name="moreno">no</set>
+			<set name="rubio">no</set>
+			<set name="blanco">no</set>
+			<set name="calvo">no</set>
+			<set name="pelirrojo">no</set>
+			<set name="marron">si</set>
+		</think>
+
+		<srai>DESCARTA RUBIO</srai>
+		<srai>DESCARTA BLANCO</srai>
+		<srai>DESCARTA CALVO</srai>
+		<srai>DESCARTA PELIRROJO</srai>
+		<srai>DESCARTA MORENO</srai>
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE EL PELO MARRON</that>
+	<template>
+		<think>
+			<set name="marron">no</set>
+		</think>
+		<srai>DESCARTA MARRON</srai>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>SI</pattern>
+	<that>ES CALVO</that>
+	<template>
+		<think>
+			<set name="pelo">calvo</set>
+			<set name="moreno">no</set>
+			<set name="rubio">no</set>
+			<set name="blanco">no</set>
+			<set name="calvo">si</set>
+			<set name="pelirrojo">no</set>
+			<set name="marron">no</set>
+		</think>
+
+		<srai>DESCARTA RUBIO</srai>
+		<srai>DESCARTA BLANCO</srai>
+		<srai>DESCARTA MORENO</srai>
+		<srai>DESCARTA PELIRROJO</srai>
+		<srai>DESCARTA MARRON</srai>
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>ES CALVO</that>
+	<template>
+		<think>
+			<set name="calvo">no</set>
+		</think>
+		<srai>DESCARTA CALVO</srai>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+
+<!--¿Tiene los ojos *?-->
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE LOS OJOS *</that>
+	<template>
+		<think>
+			<set name="ojos"><thatstar/></set>
+			<condition name="ojos">
+				<li value="claros">
+					<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+						<srai>ITERATE <map name="ojos">oscuros</map></srai>
+					</set>
+				</li>
+				<li value="oscuros">
+					<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+						<srai>ITERATE <map name="ojos">claros</map></srai>
+					</set>
+				</li>
+			</condition>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE LOS OJOS *</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="ojos"><thatstar/></map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set var="no_color_ojos"><thatstar/></set>
+			<condition var="no_color_ojos">
+				<li value="claros">
+					<set name="ojos">oscuros</set>
+				</li>
+				<li value="oscuros">
+					<set name="ojos">claros</set>
+				</li>
+			</condition>
+		</think>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+
+<!--¿Tiene la piel *?-->
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE LA PIEL *</that>
+	<template>
+		<think>
+			<set name="piel"><thatstar/></set>
+			<condition name="piel">
+				<li value="clara">
+					<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+						<srai>ITERATE <map name="piel">oscura</map></srai>
+					</set>
+				</li>
+				<li value="oscura">
+					<set name="rubio">no</set>
+					<set name="blanco">no</set>
+					<set name="marron">no</set>
+					<set name="pelirrojo">no</set>
+					<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+						<srai>ITERATE <map name="piel">clara</map></srai>
+					</set>
+				</li>
+			</condition>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE LA PIEL *</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="piel"><thatstar/></map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set var="no_color_piel"><thatstar/></set>
+			<condition var="no_color_piel">
+				<li value="clara">
+					<set name="piel">oscura</set>
+				</li>
+				<li value="oscura">
+					<set name="piel">clara</set>
+				</li>
+			</condition>
+		</think>
+
+		<srai>ADIVINAR</srai>
+	</template>
+</category>
+
+
+<!--¿Tiene gafas?-->
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE GAFAS</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="gafas">no</map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set name="gafas">si</set>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE GAFAS</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="gafas">si</map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set name="gafas">no</set>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+
+<!--¿Tiene bigote?-->
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE BIGOTE</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="bigote">no</map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set name="bigote">si</set>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE BIGOTE</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="bigote">si</map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set name="bigote">no</set>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+<!--¿Tiene barba?-->
+<category>
+	<pattern>SI</pattern>
+	<that>TIENE BARBA</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="barba">no</map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set name="barba">si</set>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>TIENE BARBA</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="barba">si</map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set name="barba">no</set>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+
+<!--¿Es *?-->
+<category>
+	<pattern>SI</pattern>
+	<that>ES *</that>
+	<template>
+		<think>
+			<set name="genero"><thatstar/></set>
+			<condition name="genero">
+				<li value="hombre">
+					<set name="pregunta">2</set>
+					<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+						<srai>ITERATE <map name="genero">mujer</map></srai>
+					</set>
+				</li>
+				<li value="mujer">
+					<set name="pregunta">4</set>
+					<set name="bigote">no</set>
+					<set name="barba">no</set>
+					<set name="calvo">no</set>
+					<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+						<srai>ITERATE <map name="genero">hombre</map></srai>
+					</set>
+				</li>
+			</condition>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+<category>
+	<pattern>NO</pattern>
+	<that>ES *</that>
+	<template>
+		<think>
+			<set var="eliminando"><!--Empiezo a iterar sobre los que debería descartar-->
+				<srai>ITERATE <map name="genero"><thatstar/></map></srai>
+			</set>
+		</think>
+		<condition var="eliminando">
+			<li value="end"></li>
+			<li>
+				<think>
+					<set var="posicion"><!--Encuentro el personaje a descartar si aún no estaba descartado-->
+						<srai>FINDITEM <get var="eliminando"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set name="candidatos"><!--Y lo descarto-->
+						<srai>REMOVEITEM <get var="posicion"/> IN <get name="candidatos"/></srai>
+					</set>
+					<set var="eliminando">
+						<srai>NEXT</srai>
+					</set>
+				</think>
+				<loop/>
+			</li>
+		</condition>
+		<think>
+			<set var="no_genero"><thatstar/></set>
+			<condition var="no_genero">
+				<li value="hombre">
+					<set name="pregunta">4</set>
+					<set name="genero">mujer</set>
+					<set name="bigote">no</set>
+					<set name="barba">no</set>
+					<set name="calvo">no</set>
+				</li>
+				<li value="mujer">
+					<set name="pregunta">2</set>
+					<set name="genero">hombre</set>
+				</li>
+			</condition>
+		</think>
+
+		<srai>PREGUNTAR</srai>
+	</template>
+</category>
+
+</topic>
+
+</aiml>

@@ -55,10 +55,11 @@ public class MainActivity extends VoiceActivity {
     private static Integer ID_PROMPT_INFO = 1;    //Id chosen to identify the prompts that involve only informing the user
     private long startListeningTime = 0; // To skip errors (see processAsrError method)
 
+    //TODO: Rellenar con tus propios datos
     private String host = "aiaas.pandorabots.com";
-    private String userKey = "3223f25e9022d6b4291ea3f0ef4f4fe4";
-    private String appId = "1409614146927";
-    private String botName = "whoiswho";
+    private String userKey = "";
+    private String appId = "";
+    private String botName = "";
     private ArrayList<String> conversation = new ArrayList<>();
     PandoraConnection pandoraConnection = new PandoraConnection(host, appId, userKey, botName);
 
